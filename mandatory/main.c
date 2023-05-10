@@ -6,7 +6,7 @@
 /*   By: cmenke <cmenke@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/09 20:08:33 by cmenke            #+#    #+#             */
-/*   Updated: 2023/05/10 21:49:25 by cmenke           ###   ########.fr       */
+/*   Updated: 2023/05/10 22:23:57 by cmenke           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,21 +41,21 @@ int	ft_create_childs(t_vars vars, int *files_fd, char **envp_paths)
 	if (pipe(pipe_fd) == -1)
 		ft_free_close_err_exit(files_fd, pipe_fd, envp_paths, "pipe error");
 	child_1 = fork();
-	if (child_1 > 0)
+	if (child_1 == 0)
 		ft_first_child(pipe_fd, files_fd[0], vars, envp_paths);
 	else if(child_1 < 0)
 		ft_free_close_err_exit(files_fd, pipe_fd, envp_paths, "fork 1 error");
 	child_2 = fork();
-	if (child_2 > 0)
+	if (child_2 == 0)
 		ft_last_child(pipe_fd, files_fd[1], vars, envp_paths);
 	else if(child_2 < 0)
 		ft_free_close_err_exit(files_fd, pipe_fd, envp_paths, "fork 2 error");
 	ft_free_close_err_exit(files_fd, pipe_fd, envp_paths, NULL);
-	waitpid(child_1, NULL, WUNTRACED);
 	waitpid(child_2, &stat_loc, WUNTRACED);
 	if (WIFEXITED(stat_loc))
 		exit_code =  WEXITSTATUS(stat_loc);
-	return (exit_code);
+	waitpid(child_1, NULL, WUNTRACED);
+	exit(exit_code);
 }
 
 int	main(int argc, char **argv, char **envp)
@@ -70,5 +70,6 @@ int	main(int argc, char **argv, char **envp)
 	vars.envp = envp;
 	envp_paths = ft_get_envp_cmd_paths(envp);
 	ft_open_file_fds(argv, files_fd);
-	return(ft_create_childs(vars, files_fd, envp_paths));	
+	ft_create_childs(vars, files_fd, envp_paths);
+	exit (0);
 }
