@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipex.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cmenke <cmenke@student.42.fr>              +#+  +:+       +#+        */
+/*   By: user <user@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/09 20:08:38 by cmenke            #+#    #+#             */
-/*   Updated: 2023/05/10 23:19:00 by cmenke           ###   ########.fr       */
+/*   Updated: 2023/05/10 11:55:23 by user             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ typedef struct s_vars
 // get_cmd_args.c
 char	**ft_get_cmd_and_cmd_args(char *s);
 // envp_paths.c
-char	**ft_get_envp_cmd_paths(char **envp);
+char	**ft_get_envp_paths(char **envp);
 char	*ft_get_cmd_path(char **envp_cmd_paths, char *cmd);
 //childs.c
 void	ft_first_child(int pipe_fds[2], int file_fd[2], t_vars vars, char **envp_paths);

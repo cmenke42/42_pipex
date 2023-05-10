@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   envp_paths.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cmenke <cmenke@student.42.fr>              +#+  +:+       +#+        */
+/*   By: user <user@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/10 18:14:18 by cmenke            #+#    #+#             */
-/*   Updated: 2023/05/10 23:25:04 by cmenke           ###   ########.fr       */
+/*   Updated: 2023/05/10 11:57:26 by user             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,15 +41,15 @@ static char	**ft_add_slash_to_envp_paths(char **envp_paths)
 	return (result);
 }
 
-char	**ft_get_envp_cmd_paths(char **envp)
+char	**ft_get_envp_paths(char **envp)
 {
 	int		i;
 	char	*path_string;
-	char	**envp_cmd_paths;
+	char	**envp_paths;
 
 	i = 0;
 	path_string = NULL;
-	envp_cmd_paths = NULL;
+	envp_paths = NULL;
 	while (envp && envp[i])
 	{
 		if (ft_strncmp(envp[i], "PATH=", 5) == 0)
@@ -58,38 +58,38 @@ char	**ft_get_envp_cmd_paths(char **envp)
 	}
 	if (path_string)
 	{
-		envp_cmd_paths = ft_split(path_string, ':');
-		if (!envp_cmd_paths)
+		envp_paths = ft_split(path_string, ':');
+		if (!envp_paths)
 			ft_error_exit("Malloc error envp cmd paths", 1);
 	}
-	if (envp_cmd_paths)
+	if (envp_paths)
 	{
-		envp_cmd_paths = ft_add_slash_to_envp_paths(envp_cmd_paths);
-		if (!envp_cmd_paths)
+		envp_paths = ft_add_slash_to_envp_paths(envp_paths);
+		if (!envp_paths)
 		{
-			envp_cmd_paths = ft_free_double_pointer(envp_cmd_paths);
+			envp_paths = ft_free_double_pointer(envp_paths);
 			exit(1);
 		}
 	}
-	return (envp_cmd_paths);
+	return (envp_paths);
 }
 
-char	*ft_get_cmd_path(char **envp_cmd_paths, char *cmd)
+char	*ft_get_cmd_path(char **envp_paths, char *cmd)
 {
 	int		i;
 	char	*cmd_path;
 
 	cmd_path = NULL;
 	i = 0;
-	while (envp_cmd_paths[i] && cmd)
+	while (envp_paths[i] && cmd)
 	{
-		cmd_path = ft_strjoin(envp_cmd_paths[i], cmd);
+		cmd_path = ft_strjoin(envp_paths[i], cmd);
 		if (!cmd_path)
 		{
 			i = 0;
-			while(envp_cmd_paths[i])
-				free(envp_cmd_paths[i++]);
-			free(envp_cmd_paths);
+			while(envp_paths[i])
+				free(envp_paths[i++]);
+			free(envp_paths);
 			ft_error_exit("Malloc error cmd path", 1);
 		}
 		if (access(cmd_path, X_OK) == 0)

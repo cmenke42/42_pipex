@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cmenke <cmenke@student.42.fr>              +#+  +:+       +#+        */
+/*   By: user <user@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/09 20:08:33 by cmenke            #+#    #+#             */
-/*   Updated: 2023/05/10 23:17:29 by cmenke           ###   ########.fr       */
+/*   Updated: 2023/05/10 11:55:10 by user             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,7 @@ int	main(int argc, char **argv, char **envp)
 		exit (1);
 	vars.argv = argv;
 	vars.envp = envp;
-	envp_paths = ft_get_envp_cmd_paths(envp);
+	envp_paths = ft_get_envp_paths(envp);
 	ft_open_file_fds(vars.argv, files_fd);
 	ft_create_childs(vars, files_fd, envp_paths);
 	exit (0);
