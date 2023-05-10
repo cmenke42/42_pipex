@@ -6,7 +6,7 @@
 /*   By: cmenke <cmenke@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/10 18:14:18 by cmenke            #+#    #+#             */
-/*   Updated: 2023/05/10 21:47:49 by cmenke           ###   ########.fr       */
+/*   Updated: 2023/05/10 23:25:04 by cmenke           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,7 @@ static char	**ft_add_slash_to_envp_paths(char **envp_paths)
 		}
 		i++;
 	}
+	ft_free_double_pointer(envp_paths);
 	return (result);
 }
 

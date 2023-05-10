@@ -6,7 +6,7 @@
 /*   By: cmenke <cmenke@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/09 20:08:38 by cmenke            #+#    #+#             */
-/*   Updated: 2023/05/10 21:47:55 by cmenke           ###   ########.fr       */
+/*   Updated: 2023/05/10 23:19:00 by cmenke           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,8 +31,8 @@ char	**ft_get_cmd_and_cmd_args(char *s);
 char	**ft_get_envp_cmd_paths(char **envp);
 char	*ft_get_cmd_path(char **envp_cmd_paths, char *cmd);
 //childs.c
-void	ft_first_child(int pipe_fds[2], int file_fd, t_vars vars, char **envp_paths);
-void	ft_last_child(int pipe_fds[2], int file_fd, t_vars vars, char **envp_paths);
+void	ft_first_child(int pipe_fds[2], int file_fd[2], t_vars vars, char **envp_paths);
+void	ft_last_child(int pipe_fds[2], int file_fd[2], t_vars vars, char **envp_paths);
 // checks.c
 bool	ft_check_quote_amt(char *cmd_string);
 // main.c
@@ -46,6 +46,8 @@ char **ft_remove_quotes(char **cmd_args);
 void	ft_free_close_err_exit(int *files_fd, int *pipe_fd, char **envp_paths,
 							 char *error_text);
 void	ft_error_exit(char *error_text, int exit_code);
+char	**ft_free_double_pointer(char **ptr);
+void	ft_close_fd(int *files_fd, int *pipe_fd);
 
 #endif
 
