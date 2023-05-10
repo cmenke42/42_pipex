@@ -6,7 +6,7 @@
 /*   By: cmenke <cmenke@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/09 20:08:33 by cmenke            #+#    #+#             */
-/*   Updated: 2023/05/10 18:50:35 by cmenke           ###   ########.fr       */
+/*   Updated: 2023/05/10 19:12:44 by cmenke           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,18 +19,27 @@ void	ft_error_exit(char *error_text, int exit_code)
 	exit(exit_code);
 }
 
+char **ft_free_double_pointer(char **ptr)
+{
+	int i;
+
+	i = 0;
+	if (ptr)
+	{
+		while (ptr[i])
+			free(ptr[i++]);
+		free(ptr);
+	}
+	return (NULL);
+}
+
 void	ft_error_free_exit(char *error_text, char **envp_cmd_paths, int pipe_fds[2])
 {
 	int i;
 
 	i = 0;
 	perror(error_text);
-	if (envp_cmd_paths)
-	{
-		while (envp_cmd_paths[i])
-			free(envp_cmd_paths[i++]);
-		free(envp_cmd_paths);
-	}
+	envp_cmd_paths = ft_free_double_pointer(envp_cmd_paths);
 	if (pipe_fds[0] > 2)
 	{
 		close(pipe_fds[0]);
@@ -71,6 +80,31 @@ char	*ft_get_cmd_path(char **envp_cmd_paths, char *cmd)
 		i++;
 	}
 	return (NULL);
+}
+
+//files_fd[0] = in;
+//files_fd[1] = out;
+void	ft_prepare_for_childs(int argc, char **argv, char **envp)
+{
+	char	**envp_cmd_paths;
+	char	*cmd_line_1;
+	char	*cmd_line_2;
+	int		files_fd[2];
+	mode_t	mode;
+
+	mode = S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH;
+	files_fd[0] = open(argv[1], O_RDONLY);
+	if (files_fd[0] == -1)
+		ft_error_ret_false("open error");
+	files_fd[1] = open(argv[4], O_WRONLY | O_TRUNC | O_CREAT, mode);
+	if (files_fd[1] == -1)
+	{
+		close(files_fd[0]);
+		ft_error_ret_false("open error");
+	}
+	envp_cmd_paths = ft_get_envp_cmd_paths(envp);
+	cmd_line_1 = ft_get_cmd_and_cmd_args(argv[2]);
+	cmd_line_2 = ft_get_cmd_and_cmd_args(argv[3]);
 }
 
 // what to do with shell builtin commands especially when unset path is used -> nothing.

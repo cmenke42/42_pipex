@@ -6,7 +6,7 @@
 /*   By: cmenke <cmenke@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/10 18:14:18 by cmenke            #+#    #+#             */
-/*   Updated: 2023/05/10 18:16:44 by cmenke           ###   ########.fr       */
+/*   Updated: 2023/05/10 19:00:20 by cmenke           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,6 +60,7 @@ char	**ft_get_envp_cmd_paths(char **envp)
 		if (!envp_cmd_paths)
 			ft_error_exit("Malloc error envp cmd paths", 1);
 	}
-	envp_cmd_paths = ft_add_slash_to_envp_paths(envp_cmd_paths);
+	if (envp_cmd_paths)
+		envp_cmd_paths = ft_add_slash_to_envp_paths(envp_cmd_paths);
 	return (envp_cmd_paths);
 }
