@@ -6,119 +6,108 @@
 /*   By: cmenke <cmenke@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/09 20:08:33 by cmenke            #+#    #+#             */
-/*   Updated: 2023/05/10 16:59:30 by cmenke           ###   ########.fr       */
+/*   Updated: 2023/05/10 18:50:35 by cmenke           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
 
-bool	ft_check_quote_amt(char *cmd_string)
+void	ft_error_exit(char *error_text, int exit_code)
 {
-	int	i;
-	int	single_quotes;
+	if (exit_code != 0)
+		perror(error_text);
+	exit(exit_code);
+}
+
+void	ft_error_free_exit(char *error_text, char **envp_cmd_paths, int pipe_fds[2])
+{
+	int i;
 
 	i = 0;
-	single_quotes = 0;
-	while (cmd_string[i])
+	perror(error_text);
+	if (envp_cmd_paths)
 	{
-		if (cmd_string[i] == '\'')
-			single_quotes++;
-		i++;
+		while (envp_cmd_paths[i])
+			free(envp_cmd_paths[i++]);
+		free(envp_cmd_paths);
 	}
-	if (single_quotes % 2 == 0)
-		return (true);
+	if (pipe_fds[0] > 2)
+	{
+		close(pipe_fds[0]);
+		close(pipe_fds[1]);
+	}
+	exit(1);
+}
+
+
+bool	ft_error_ret_false(char *error_text)
+{
+	perror(error_text);
 	return (false);
 }
 
-void	ft_skip_quote_block(char*s, int *i)
-{
-	//skip first '
-	*i += 1;
-	while (s[*i] && s[*i] != '\'')
-		*i += 1;
-}
-
-void ft_skip_to_next_delim(char *s, char c, int *i)
-{
-	while(s[*i] && s[*i] != c)
-	{
-		if (s[*i] == '\'')
-			ft_skip_quote_block(s, i);
-		*i += 1;
-	}
-}
-
-//start with i = -1
-int	ft_count_cmd_blocks(char *s, char c)
-{
-	int	block_count;
-	int	i;
-	
-	block_count = 0;
-	i = -1;
-	while (s[++i])
-	{
-		if(s[i] != c)
-		{
-			block_count++;
-			ft_skip_to_next_delim(s, c, &i);
-		}
-		if(!s[i])
-			break ;
-	}
-	return (block_count);
-}
-
-char	**ft_get_cmd_blocks(char *s, char c, char **result)
+char	*ft_get_cmd_path(char **envp_cmd_paths, char *cmd)
 {
 	int		i;
-	int		j;
-	int		start;
-	
-	i = -1;
-	j = -1;
-	while (s[++i])
+	char	*cmd_path;
+
+	cmd_path = NULL;
+	i = 0;
+	while (envp_cmd_paths[i] && cmd)
 	{
-		if(s[i] != c)
+		cmd_path = ft_strjoin(envp_cmd_paths[i], cmd);
+		if (!cmd_path)
 		{
-			start = i;
-			ft_skip_to_next_delim(s, c, &i);
-			result[++j] = ft_substr(s, start, i - start);
+			i = 0;
+			while(envp_cmd_paths[i])
+				free(envp_cmd_paths[i++]);
+			free(envp_cmd_paths);
+			ft_error_exit("Malloc error cmd path", 1);
 		}
-		if(!result[j])
-		{
-			perror("get cmd substrings - malloc");
-			while (j >= 0)
-				free(result[j--]);
-			free(result);
-			return (NULL);
-		}
-		if(!s[i])
-			break ;
+		if (access(cmd_path, X_OK) == 0)
+			return (cmd_path);
+		else
+			free(cmd_path);
+		i++;
 	}
-	return (result);
+	return (NULL);
 }
 
-char	**ft_get_cmd_and_cmd_args(char *s)
-{
-	char	**result;
-	result = (char **)malloc((ft_count_cmd_blocks(s, ' ') + 1) * sizeof(char *));
-	if (!result)
-		perror("get cmd args - malloc");
-	result = ft_get_cmd_blocks(s, ' ', result);
-	return (result);
-}
-
+// what to do with shell builtin commands especially when unset path is used -> nothing.
 int	main(int argc, char **argv, char **envp)
 {
-	if(ft_check_quote_amt(argv[1]) == false)
-		return (1);
-	char **result;
+	char	**envp_cmd_paths;
+	int 	pipe_fds[2];
+	pid_t	pid_first_child;
+	pid_t	pid_last_child;
+	int		stat_loc;
+	int		return_status;
 
-	result = ft_get_cmd_and_cmd_args(argv[1]);
-	int i = 0;
-	while (result && result[i])
-		ft_printf("args:%s\n", result[i++]);
-	ft_printf("\nblock count:%d\n", ft_count_cmd_blocks(argv[1], ' '));
-	ft_printf("still alive\n");
+	if (argc != 5)
+		return (1);
+	envp_cmd_paths = ft_get_envp_cmd_paths(envp);
+	if (pipe(pipe_fds) == -1)
+		ft_error_free_exit("pipe eror", envp_cmd_paths, pipe_fds);
+	//check for fork error
+	pid_first_child = fork();
+	if (pid_first_child == 0)
+		ft_first_child(pipe_fds, argv, envp, envp_cmd_paths);
+	else if (pid_first_child > 0)
+		pid_last_child = fork();
+	else
+		ft_error_free_exit("fork error", envp_cmd_paths, pipe_fds);
+	if (pid_last_child == 0)
+		ft_last_child(pipe_fds, argv, envp, envp_cmd_paths);
+	else if (pid_last_child == -1)
+		ft_error_free_exit("fork error", envp_cmd_paths, pipe_fds);
+	else
+	{
+		close(pipe_fds[1]);
+		close(pipe_fds[0]);
+		waitpid(pid_last_child, &stat_loc, WUNTRACED);
+		if (WIFEXITED(stat_loc))
+			return_status =  WEXITSTATUS(stat_loc);
+		waitpid(pid_first_child, NULL, WUNTRACED);
+		return (return_status);
+	}
 }
