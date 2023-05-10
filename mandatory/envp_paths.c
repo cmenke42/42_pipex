@@ -6,33 +6,34 @@
 /*   By: cmenke <cmenke@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/10 18:14:18 by cmenke            #+#    #+#             */
-/*   Updated: 2023/05/10 19:00:20 by cmenke           ###   ########.fr       */
+/*   Updated: 2023/05/10 21:47:49 by cmenke           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
 
-static char	**ft_add_slash_to_envp_paths(char **envp)
+static char	**ft_add_slash_to_envp_paths(char **envp_paths)
 {
 	char	**result;
 	int		i;
 
 	i = 0;
-	while (envp && envp[i])
+	while (envp_paths && envp_paths[i])
 		i++;
 	result = (char **)ft_calloc(i + 1, sizeof(char *));
 	if (!result)
-		ft_error_exit("Malloc error add slash", 1);
+		perror("Malloc error add slash");
 	i = 0;
-	while(envp && envp[i])
+	while(envp_paths && envp_paths[i])
 	{
-		result[i] = ft_strjoin(envp[i], "/");
+		result[i] = ft_strjoin(envp_paths[i], "/");
 		if (!result[i])
 		{
 			while (i >= 0)
 				free(result[i--]);
 			free(result);
-			ft_error_exit("Malloc error add slash", 1);
+			result = NULL;
+			perror("Malloc error add slash");
 		}
 		i++;
 	}
@@ -61,6 +62,40 @@ char	**ft_get_envp_cmd_paths(char **envp)
 			ft_error_exit("Malloc error envp cmd paths", 1);
 	}
 	if (envp_cmd_paths)
+	{
 		envp_cmd_paths = ft_add_slash_to_envp_paths(envp_cmd_paths);
+		if (!envp_cmd_paths)
+		{
+			envp_cmd_paths = ft_free_double_pointer(envp_cmd_paths);
+			exit(1);
+		}
+	}
 	return (envp_cmd_paths);
+}
+
+char	*ft_get_cmd_path(char **envp_cmd_paths, char *cmd)
+{
+	int		i;
+	char	*cmd_path;
+
+	cmd_path = NULL;
+	i = 0;
+	while (envp_cmd_paths[i] && cmd)
+	{
+		cmd_path = ft_strjoin(envp_cmd_paths[i], cmd);
+		if (!cmd_path)
+		{
+			i = 0;
+			while(envp_cmd_paths[i])
+				free(envp_cmd_paths[i++]);
+			free(envp_cmd_paths);
+			ft_error_exit("Malloc error cmd path", 1);
+		}
+		if (access(cmd_path, X_OK) == 0)
+			return (cmd_path);
+		else
+			free(cmd_path);
+		i++;
+	}
+	return (NULL);
 }
