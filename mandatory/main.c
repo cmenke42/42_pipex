@@ -6,7 +6,7 @@
 /*   By: user <user@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/09 20:08:33 by cmenke            #+#    #+#             */
-/*   Updated: 2023/05/09 22:35:00 by user             ###   ########.fr       */
+/*   Updated: 2023/05/10 11:48:07 by user             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,59 +30,128 @@ bool	ft_check_quote_amt(char *cmd_string)
 	return (false);
 }
 
-// start with i = -1
-int	ft_count_cmd_blocks(char *cmd_string, char c)
+// // start with i = -1
+// int	ft_count_cmd_blocks(char *cmd_string, char c)
+// {
+// 	int	block_count;
+// 	int	i;
+	
+// 	block_count = 0;
+// 	i = -1;
+// 	while (cmd_string[++i])
+// 	{
+// 		if (cmd_string[i] != c)
+// 		{
+// 			if (cmd_string[i] == c || block_count == 0)
+// 				block_count++;
+// 			if (cmd_string[i] == '\'')
+// 				while (cmd_string[++i] && cmd_string[i] != '\'')
+// 					;
+// 			else
+// 				while (cmd_string[i] && cmd_string[i] != c && cmd_string[i] != '\'')
+// 					i++;
+// 		}
+// 		if (!cmd_string[i])
+// 			break ;
+// 	}
+// 	return (block_count);
+// }
+
+int	ft_skip_quote_block(char*s, int i)
+{
+	//skip first '
+	i++;
+	while (s[i] && s[i] != '\'')
+		i++;
+	return (i);
+}
+
+bool	ft_search_for_valid_char(char*s, char c)
+{
+	int i;
+
+	i = 0;
+	while (s[i])
+	{
+		if(s[i] != c && s[i] != '\'')
+			return (true);
+		i++;
+	}
+	return (false);
+}
+
+//start with i = -1
+int	ft_count_cmd_blocks(char *s, char c)
 {
 	int	block_count;
 	int	i;
 	
 	block_count = 0;
 	i = -1;
-	while (cmd_string[++i])
+	while (s[++i])
 	{
-		if (cmd_string[i] != c)
+		ft_printf("char:%c\n", s[i]);
+		if (s[i] != c)
 		{
-			if (cmd_string[i] == c || block_count == 0)
+			if (s[i] != '\'' || (i > 0 && 
+				(s[i - 1] == ' ' && s[i] == '\'' && s[i + 1] != '\''))
+				|| i == 0 && (s[i] == '\'' && s[i + 1] != '\''))
+			{
 				block_count++;
-			if (cmd_string[i] == '\'')
-				while (cmd_string[++i] && cmd_string[i] != '\'')
-					;
+				if (s[i] == '\'')
+					i = ft_skip_quote_block(s, i);
+				else
+				{
+					while (s[i] != c && s[i])
+						i++;
+				}
+			}
 			else
-				while (cmd_string[i] && cmd_string[i] != c && cmd_string[i] != '\'')
-					i++;
+				i = ft_skip_quote_block(s, i);
+			if (s[i] == '\0')
+				break ;
 		}
-		if (!cmd_string[i])
-			break ;
 	}
+	if (block_count == 0 && ft_search_for_valid_char(s, c) == true)
+		block_count++;
 	return (block_count);
 }
-
 // //start with i = -1
-// int	ft_count_cmd_blocks(char *cmd_string, char c, bool allocate, int i)
+// int	ft_count_cmd_blocks(char *s, char c)
 // {
 // 	int	block_count;
+// 	int	i;
 	
 // 	block_count = 0;
-// 	while (cmd_string[++i])
+// 	i = 0;
+// 	while(s[i])
 // 	{
-// 		if (cmd_string[i] != c && cmd_string[i] != '\'')
+// 		if (s[i] != c)
 // 		{
-// 			if (allocate == true)
-// 				ft_allocate_substring(cmd_string, )
-// 			block_count++;
-// 			while (cmd_string[i] && cmd_string[i] != c && cmd_string[i] != '\'')
+// 			if ((s[i] != c && s[i] != '\'')
+// 				|| (s[i] && s[i] == '\''
+// 				&& s[i + 1] != '\''))
+// 					block_count++;
+// 			while (s[i] && s[i] != c && s[i] != '\'')
 // 				i++;
 // 		}
-// 		if (cmd_string[i] == '\'')
+// 		else if (s[i] == '\'')
 // 		{
-// 			while (cmd_string[++i] && cmd_string[i] != '\'')
-// 				;
-// 			if (cmd_string[i])
-// 				i++;
+		
 // 		}
-// 		if (!cmd_string[i])
+// 		if (!s[i])
 // 			break ;
+// 		// if (s[i] == c)
+// 		// {
+// 		// 	while (s[i] && s[i] == c && s[i] != '\'')
+// 		// 		i++;
+// 		// 	if ((s[i] != c && s[i] != '\'')
+// 		// 		|| (s[i] && s[i] == '\''
+// 		// 		&& s[i + 1] != '\''))
+// 		// 			block_count++;
+// 		// }
 // 	}
+
 // 	return (block_count);
 // }
 
