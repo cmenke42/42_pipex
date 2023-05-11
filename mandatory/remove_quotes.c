@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   remove_quotes.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cmenke <cmenke@student.42.fr>              +#+  +:+       +#+        */
+/*   By: user <user@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/10 18:27:40 by cmenke            #+#    #+#             */
-/*   Updated: 2023/05/10 23:07:36 by cmenke           ###   ########.fr       */
+/*   Updated: 2023/05/11 01:38:31 by user             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,20 +20,20 @@ static char *ft_copy_without_quotes(char *s)
 	char *result;
 
 	counter = 0;
-	i = -1;
+	i = -1;	
 	while (s[++i])
-		if(s[i] != '\'')
+		if(s[i] != '\'' && s[i] != '"')
 			counter++;
 	result = malloc((counter + 1) * sizeof(char));
 	if(!result)
 	{
 		perror("remove quotes - malloc");
 		return (NULL);
-	}
+	}	
 	i = -1;
 	j = 0;
 	while (s[++i])
-		if(s[i] != '\'')
+		if(s[i] != '\'' && s[i] != '"')
 			result[j++] = s[i];
 	result[j] = '\0';
 	return (result);
@@ -57,6 +57,6 @@ char **ft_remove_quotes(char **cmd_args)
 		free(cmd_args[i]);
 		cmd_args[i] = temp;
 		i++;
-	}
+	}	
 	return (cmd_args);
 }

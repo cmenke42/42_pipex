@@ -6,7 +6,7 @@
 /*   By: user <user@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/09 20:08:33 by cmenke            #+#    #+#             */
-/*   Updated: 2023/05/10 11:55:10 by user             ###   ########.fr       */
+/*   Updated: 2023/05/11 01:39:00 by user             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ int	ft_create_childs(t_vars vars, int *files_fd, char **envp_paths)
 	waitpid(child_2, &stat_loc, WUNTRACED);
 	if (WIFEXITED(stat_loc))
 		exit_code =  WEXITSTATUS(stat_loc);
-	waitpid(child_1, NULL, WUNTRACED);
+	waitpid(child_1, NULL, WUNTRACED);	
 	exit(exit_code);
 }
 
@@ -73,3 +73,12 @@ int	main(int argc, char **argv, char **envp)
 	ft_create_childs(vars, files_fd, envp_paths);
 	exit (0);
 }
+
+	// int i;
+
+	// i = 0;
+	// if (envp_paths)
+	// {
+	// 	while (envp_paths[i])
+	// 		ft_printf("%s\n", envp_paths[i++]);
+	// }
