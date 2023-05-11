@@ -6,7 +6,7 @@
 /*   By: user <user@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/10 18:27:40 by cmenke            #+#    #+#             */
-/*   Updated: 2023/05/11 01:38:31 by user             ###   ########.fr       */
+/*   Updated: 2023/05/11 02:04:42 by user             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,10 +26,7 @@ static char *ft_copy_without_quotes(char *s)
 			counter++;
 	result = malloc((counter + 1) * sizeof(char));
 	if(!result)
-	{
-		perror("remove quotes - malloc");
 		return (NULL);
-	}	
 	i = -1;
 	j = 0;
 	while (s[++i])
@@ -50,13 +47,14 @@ char **ft_remove_quotes(char **cmd_args)
 		temp = ft_copy_without_quotes(cmd_args[i]);
 		if(!temp)
 		{
-			perror("copy without quotes - malloc");
+			perror("remove quotes - malloc");
 			ft_free_double_pointer(cmd_args);
 			return (NULL);
 		}
 		free(cmd_args[i]);
 		cmd_args[i] = temp;
 		i++;
-	}	
+	}
+	ft_printf("string:%s\n", cmd_args[i]);
 	return (cmd_args);
 }

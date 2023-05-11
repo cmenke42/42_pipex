@@ -6,7 +6,7 @@
 /*   By: user <user@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/09 00:52:02 by user              #+#    #+#             */
-/*   Updated: 2023/05/11 01:39:40 by user             ###   ########.fr       */
+/*   Updated: 2023/05/11 01:54:06 by user             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,6 +57,6 @@ void	ft_last_child(int pipe_fds[2], int file_fd[2], t_vars vars, char **envp_pat
 		perror("execve error - last child");
 	ft_free_double_pointer(envp_paths);
 	if (cmd_path)
-		free(cmd_path);
+		free(cmd_path);		
 	exit(1);
 }
