@@ -6,7 +6,7 @@
 /*   By: cmenke <cmenke@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/09 20:08:33 by cmenke            #+#    #+#             */
-/*   Updated: 2023/05/11 16:34:16 by cmenke           ###   ########.fr       */
+/*   Updated: 2023/05/11 16:52:55 by cmenke           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@ int	ft_error_and_ret(char *error_text, int ret_val)
 	perror(error_text);
 	return (ret_val);
 }
+
 //mode sets the permissions of the file created if non existent.
 //Permissions can be found in man 2 chmod.
 // vars.files_fd[0] = in
@@ -58,9 +59,8 @@ char **ft_cmd_path_for_child(t_vars vars, char **envp_paths, int *exit_code, cha
 	return (cmd_args);
 }
 
-int	ft_create_child_1(t_vars vars, char **envp_paths, int *pipe_fd)
+int	ft_create_child_1(t_vars vars, char **envp_paths, int *pipe_fd, pid_t *child_1)
 {
-	pid_t	child_1;
 	int		exit_code;
 	char	*cmd_path;
 	char	**cmd_args;
@@ -72,40 +72,33 @@ int	ft_create_child_1(t_vars vars, char **envp_paths, int *pipe_fd)
 	cmd_args = ft_cmd_path_for_child(vars, envp_paths, &exit_code, cmd_path);
 	if (!cmd_path)
 		return (ft_free_and_ret(cmd_args, exit_code));
-	child_1 = fork();
-	if (child_1 == 0)
+	*child_1 = fork();
+	if (*child_1 == 0)
 		ft_first_child(pipe_fd, vars, cmd_args, cmd_path);
-	else if(child_1 < 0)
+	else if(*child_1 < 0)
 		exit_code = ft_error_and_ret("fork 1 failed", 1);
-	waitpid(child_1, NULL, WUNTRACED);
 	free(cmd_path);
 	return (exit_code);
 }
 
-int	ft_create_child_2(t_vars vars, char **envp_paths, int *pipe_fd)
+int	ft_create_child_2(t_vars vars, char **envp_paths, int *pipe_fd, pid_t *child_2)
 {
-	pid_t	child_2;
 	int		exit_code;
 	char	*cmd_path;
 	char	**cmd_args;
-	int		stat_loc;
 	
 	if (vars.files_fd[1] < 0)
 		return (1);
 	exit_code = 0;
 	cmd_path = NULL;
-	ft_printf("hello\n");
 	cmd_args = ft_cmd_path_for_child(vars, envp_paths, &exit_code, cmd_path);
 	if (!cmd_path)
 		return (ft_free_and_ret(cmd_args, exit_code));
-	child_2 = fork();
-	if (child_2 == 0)
+	*child_2 = fork();
+	if (*child_2 == 0)
 		ft_last_child(pipe_fd, vars, cmd_args, cmd_path);
-	else if(child_2 < 0)
+	else if(*child_2 < 0)
 		exit_code = ft_error_and_ret("fork 1 failed", 1);
-	waitpid(child_2, &stat_loc, WUNTRACED);
-	if (WIFEXITED(stat_loc))
-		exit_code =  WEXITSTATUS(stat_loc);
 	free(cmd_path);
 	return (exit_code);
 }
@@ -114,12 +107,21 @@ int	ft_create_childs(t_vars vars, char **envp_paths)
 {
 	int		exit_code;
 	int		pipe_fd[2];
+	pid_t	child_1;
+	pid_t	child_2;
+	int		stat_loc;
 	
 	exit_code = 0;
+	child_1 = 0;
+	child_2 = 0;
 	if (pipe(pipe_fd) == -1)
-		ft_free_close_err_exit(vars.files_fd, pipe_fd, envp_paths, "pipe error");	
-	ft_create_child_1(vars, envp_paths, pipe_fd);
-	exit_code = ft_create_child_2(vars, envp_paths, pipe_fd);
+		ft_free_close_err_exit(vars.files_fd, pipe_fd, envp_paths, "pipe error");
+	ft_create_child_1(vars, envp_paths, pipe_fd, &child_1);
+	exit_code = ft_create_child_2(vars, envp_paths, pipe_fd, &child_2);
+	waitpid(child_2, &stat_loc, WUNTRACED);
+	if (WIFEXITED(stat_loc))
+		exit_code =  WEXITSTATUS(stat_loc);
+	waitpid(child_1, NULL, WUNTRACED);
 	ft_free_close_err_exit(vars.files_fd, pipe_fd, envp_paths, NULL);
 	exit(exit_code);
 }
