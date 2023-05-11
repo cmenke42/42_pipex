@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   envp_paths.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: user <user@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: cmenke <cmenke@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/10 18:14:18 by cmenke            #+#    #+#             */
-/*   Updated: 2023/05/10 11:57:26 by user             ###   ########.fr       */
+/*   Updated: 2023/05/11 15:44:09 by cmenke           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,11 +29,9 @@ static char	**ft_add_slash_to_envp_paths(char **envp_paths)
 		result[i] = ft_strjoin(envp_paths[i], "/");
 		if (!result[i])
 		{
-			while (i >= 0)
-				free(result[i--]);
-			free(result);
-			result = NULL;
-			perror("Malloc error add slash");
+			perror("Malloc error join slash");
+			ft_free_double_pointer(result);
+			return (NULL);
 		}
 		i++;
 	}
@@ -87,9 +85,7 @@ char	*ft_get_cmd_path(char **envp_paths, char *cmd)
 		if (!cmd_path)
 		{
 			i = 0;
-			while(envp_paths[i])
-				free(envp_paths[i++]);
-			free(envp_paths);
+			envp_paths = ft_free_double_pointer(envp_paths);
 			ft_error_exit("Malloc error cmd path", 1);
 		}
 		if (access(cmd_path, X_OK) == 0)

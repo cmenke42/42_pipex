@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipex.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: user <user@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: cmenke <cmenke@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/09 20:08:38 by cmenke            #+#    #+#             */
-/*   Updated: 2023/05/10 11:55:23 by user             ###   ########.fr       */
+/*   Updated: 2023/05/11 16:28:41 by cmenke           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@ typedef struct s_vars
 {
 	char	**envp;
 	char	**argv;
+	int		files_fd[2];
 }				t_vars;
 
 // get_cmd_args.c
@@ -31,8 +32,8 @@ char	**ft_get_cmd_and_cmd_args(char *s);
 char	**ft_get_envp_paths(char **envp);
 char	*ft_get_cmd_path(char **envp_cmd_paths, char *cmd);
 //childs.c
-void	ft_first_child(int pipe_fds[2], int file_fd[2], t_vars vars, char **envp_paths);
-void	ft_last_child(int pipe_fds[2], int file_fd[2], t_vars vars, char **envp_paths);
+void	ft_first_child(int pipe_fds[2], t_vars vars, char **cmd_args, char *cmd);
+void	ft_last_child(int pipe_fds[2], t_vars vars, char **cmd_args, char *cmd);
 // checks.c
 bool	ft_check_quote_amt(char *cmd_string);
 // main.c
