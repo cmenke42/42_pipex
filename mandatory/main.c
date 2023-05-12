@@ -6,7 +6,7 @@
 /*   By: cmenke <cmenke@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/09 20:08:33 by cmenke            #+#    #+#             */
-/*   Updated: 2023/05/11 16:52:55 by cmenke           ###   ########.fr       */
+/*   Updated: 2023/05/12 14:50:44 by cmenke           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ char **ft_cmd_path_for_child(t_vars vars, char **envp_paths, int *exit_code, cha
 
 	cmd_args = NULL;
 	cmd_path = NULL;
-	cmd_args = ft_get_cmd_and_cmd_args(vars.argv[2]);
+	cmd_args = ft_get_cmd_line_elements(vars.argv[2]);
 	if (cmd_args)
 		cmd_path = ft_get_cmd_path(envp_paths, cmd_args[0]);
 	if (!cmd_path)

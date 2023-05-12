@@ -6,7 +6,7 @@
 /*   By: cmenke <cmenke@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/09 20:08:38 by cmenke            #+#    #+#             */
-/*   Updated: 2023/05/11 16:28:41 by cmenke           ###   ########.fr       */
+/*   Updated: 2023/05/12 14:47:17 by cmenke           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,14 @@ void	ft_free_close_err_exit(int *files_fd, int *pipe_fd, char **envp_paths,
 void	ft_error_exit(char *error_text, int exit_code);
 char	**ft_free_double_pointer(char **ptr);
 void	ft_close_fd(int *files_fd, int *pipe_fd);
+
+//process_cmd_line - Folder
+int		ft_count_cmd_line_elements(char *cmd_line, char c);
+int		ft_skip_quote_block(char *cmd_line, int *i, bool *split);
+int		ft_skip_to_next_delimiter(char *cmd_line, int *i, bool *split, char c);
+bool	ft_check_equal_quote_amt(char *s);
+char	**ft_get_cmd_line_elements(char *cmd_line);
+char	**ft_remove_quotes_from_elements(char **splitted_cmd_line);
 
 #endif
 

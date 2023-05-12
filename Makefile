@@ -6,7 +6,7 @@
 #    By: cmenke <cmenke@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/05/09 20:08:43 by cmenke            #+#    #+#              #
-#    Updated: 2023/05/10 23:47:22 by cmenke           ###   ########.fr        #
+#    Updated: 2023/05/12 14:50:08 by cmenke           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -16,13 +16,16 @@ NAME := pipex
 
 SRCDIR := mandatory
 
+PROCESS_CMD_LINE := $(addprefix process_cmd_line/, count_elements.c \
+													ft_get_cmd_line_elements.c \
+													remove_quotes.c)
+
 SRCS := $(addprefix ${SRCDIR}/,main.c \
 								error_and_free.c \
 								checks.c \
-								get_cmd_args.c \
 								childs.c \
 								envp_paths.c \
-								remove_quotes.c)
+								${PROCESS_CMD_LINE})
 
 OBJS := ${SRCS:.c=.o}
 
