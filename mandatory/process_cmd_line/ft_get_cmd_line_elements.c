@@ -6,7 +6,7 @@
 /*   By: cmenke <cmenke@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/12 14:37:42 by cmenke            #+#    #+#             */
-/*   Updated: 2023/05/12 14:37:56 by cmenke           ###   ########.fr       */
+/*   Updated: 2023/05/12 15:21:38 by cmenke           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,9 +60,6 @@ static char	**ft_split_cmd_line(char *cmd_line, char c,
 			split = true;
 			i_j[0]++;
 		}
-		// if (cmd_line[i_j[0]] && cmd_line[i_j[0]] != '\''
-		// 	&& cmd_line[i_j[0]] != '\"')
-		// 	i_j[0]++;
 	}
 	return (splitted_cmd_line);
 }
@@ -75,7 +72,6 @@ char	**ft_get_cmd_line_elements(char *cmd_line)
 	if (ft_check_equal_quote_amt(cmd_line) == false)
 		return (NULL);
 	count = ft_count_cmd_line_elements(cmd_line, ' ');
-	printf("count: %d\n", count);
 	if (count == 0)
 		return (NULL);
 	splitted_cmd_line = (char **)ft_calloc((count + 1), sizeof(char *));

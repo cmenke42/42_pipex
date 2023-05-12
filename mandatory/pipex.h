@@ -6,7 +6,7 @@
 /*   By: cmenke <cmenke@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/09 20:08:38 by cmenke            #+#    #+#             */
-/*   Updated: 2023/05/12 14:47:17 by cmenke           ###   ########.fr       */
+/*   Updated: 2023/05/12 15:18:27 by cmenke           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,8 +26,6 @@ typedef struct s_vars
 	int		files_fd[2];
 }				t_vars;
 
-// get_cmd_args.c
-char	**ft_get_cmd_and_cmd_args(char *s);
 // envp_paths.c
 char	**ft_get_envp_paths(char **envp);
 char	*ft_get_cmd_path(char **envp_cmd_paths, char *cmd);
@@ -41,8 +39,6 @@ char	**ft_free_double_pointer(char **ptr);
 char	*ft_get_cmd_path(char **envp_cmd_paths, char *cmd);
 bool	ft_error_ret_false(char *error_text);
 void	ft_error_exit(char *error_text, int exit_code);
-// remove_quotes.c
-char **ft_remove_quotes(char **cmd_args);
 // error_and_free.c
 void	ft_free_close_err_exit(int *files_fd, int *pipe_fd, char **envp_paths,
 							 char *error_text);

@@ -6,7 +6,7 @@
 /*   By: cmenke <cmenke@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/12 14:37:12 by cmenke            #+#    #+#             */
-/*   Updated: 2023/05/12 14:37:37 by cmenke           ###   ########.fr       */
+/*   Updated: 2023/05/12 15:21:41 by cmenke           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,7 +93,6 @@ int	ft_count_cmd_line_elements(char *cmd_line, char c)
 	split = true;
 	while (cmd_line && cmd_line[i])
 	{
-		printf("cmd_line[%d] = %c\n", i, cmd_line[i]);
 		if (cmd_line[i] != c)
 		{
 			if (cmd_line[i] == '\'' || cmd_line[i] == '\"')
