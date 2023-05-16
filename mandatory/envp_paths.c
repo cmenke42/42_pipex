@@ -6,7 +6,7 @@
 /*   By: cmenke <cmenke@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/10 18:14:18 by cmenke            #+#    #+#             */
-/*   Updated: 2023/05/16 16:06:31 by cmenke           ###   ########.fr       */
+/*   Updated: 2023/05/16 19:14:38 by cmenke           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ static char	**ft_add_slash_to_envp_paths(char **envp_paths)
 	if (!result)
 		perror("Malloc error add slash");
 	i = 0;
-	while(envp_paths && envp_paths[i])
+	while (envp_paths && envp_paths[i])
 	{
 		result[i] = ft_strjoin(envp_paths[i], "/");
 		if (!result[i])
@@ -60,15 +60,9 @@ char	**ft_get_envp_paths(char **envp)
 		if (!envp_paths)
 			ft_error_exit("Malloc error envp cmd paths", 1);
 	}
-	if (envp_paths)
-	{
-		envp_paths = ft_add_slash_to_envp_paths(envp_paths);
-		if (!envp_paths)
-		{
-			envp_paths = ft_free_double_pointer(envp_paths);
-			exit(1);
-		}
-	}
+	envp_paths = ft_add_slash_to_envp_paths(envp_paths);
+	if (!envp_paths)
+		exit(1);
 	return (envp_paths);
 }
 

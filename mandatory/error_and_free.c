@@ -6,15 +6,15 @@
 /*   By: cmenke <cmenke@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/09 20:08:33 by cmenke            #+#    #+#             */
-/*   Updated: 2023/05/10 22:21:16 by cmenke           ###   ########.fr       */
+/*   Updated: 2023/05/16 19:15:28 by cmenke           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
 
-char **ft_free_double_pointer(char **ptr)
+char	**ft_free_double_pointer(char **ptr)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	if (ptr)
@@ -42,7 +42,7 @@ void	ft_close_fd(int *files_fd, int *pipe_fd)
 
 //exits only on error
 void	ft_free_close_err_exit(int *files_fd, int *pipe_fd, char **envp_paths,
-							 char *error_text)
+							char *error_text)
 {
 	ft_close_fd(files_fd, pipe_fd);
 	envp_paths = ft_free_double_pointer(envp_paths);
@@ -53,10 +53,10 @@ void	ft_free_close_err_exit(int *files_fd, int *pipe_fd, char **envp_paths,
 	}
 }
 
-bool	ft_error_ret_false(char *error_text)
+int	ft_error_ret_1(char *error_text)
 {
 	perror(error_text);
-	return (false);
+	return (1);
 }
 
 void	ft_error_exit(char *error_text, int exit_code)
