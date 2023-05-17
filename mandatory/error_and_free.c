@@ -6,7 +6,7 @@
 /*   By: cmenke <cmenke@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/09 20:08:33 by cmenke            #+#    #+#             */
-/*   Updated: 2023/05/16 19:15:28 by cmenke           ###   ########.fr       */
+/*   Updated: 2023/05/17 16:51:46 by cmenke           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,13 +30,17 @@ void	ft_close_fd(int *files_fd, int *pipe_fd)
 {
 	if (files_fd)
 	{
-		close(files_fd[0]);
-		close(files_fd[1]);
+		if (files_fd[0] != -1)
+			close(files_fd[0]);
+		if (files_fd[1] != -1)
+			close(files_fd[1]);
 	}
 	if (pipe_fd)
 	{
-		close(pipe_fd[0]);
-		close(pipe_fd[1]);
+		if (pipe_fd[0] != -1)
+			close(pipe_fd[0]);
+		if (pipe_fd[1] != -1)
+			close(pipe_fd[1]);
 	}
 }
 

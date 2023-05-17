@@ -6,7 +6,7 @@
 /*   By: cmenke <cmenke@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/10 18:14:18 by cmenke            #+#    #+#             */
-/*   Updated: 2023/05/16 19:14:38 by cmenke           ###   ########.fr       */
+/*   Updated: 2023/05/17 15:49:24 by cmenke           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,7 @@ char	*ft_get_cmd_path(char **envp_paths, char *cmd)
 
 	cmd_path = NULL;
 	i = 0;
-	while (envp_paths[i] && cmd)
+	while (envp_paths && envp_paths[i] && cmd)
 	{
 		cmd_path = ft_strjoin(envp_paths[i], cmd);
 		if (!cmd_path)

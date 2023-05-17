@@ -6,7 +6,7 @@
 /*   By: cmenke <cmenke@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/09 20:08:33 by cmenke            #+#    #+#             */
-/*   Updated: 2023/05/16 19:20:45 by cmenke           ###   ########.fr       */
+/*   Updated: 2023/05/17 17:19:42 by cmenke           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,7 +87,6 @@ int	ft_call_childs(char **envp_paths, t_vars *vars, char **envp, char **argv)
 			vars->pipe_fds, vars->files_fd);
 	if (pid_child_1 == 0)
 		ft_first_child(argv, envp_paths, vars, envp);
-	close(vars->pipe_fds[1]);
 	pid_child_2 = fork();
 	if (pid_child_2 == -1)
 		ft_error_free_exit("fork eror", envp_paths,
