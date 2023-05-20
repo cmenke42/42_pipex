@@ -6,7 +6,7 @@
 /*   By: cmenke <cmenke@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/09 20:08:38 by cmenke            #+#    #+#             */
-/*   Updated: 2023/05/16 19:22:40 by cmenke           ###   ########.fr       */
+/*   Updated: 2023/05/19 16:23:31 by cmenke           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ void	ft_error_exit(char *error_text, int exit_code);
 // error_and_free.c
 void	ft_free_close_err_exit(int *files_fd, int *pipe_fd, char **envp_paths,
 			char *error_text);
-void	ft_error_exit(char *error_text, int exit_code);
+void	ft_close_standard_fd(int fd_0, int fd_1, int fd_2);
 char	**ft_free_double_pointer(char **ptr);
 void	ft_close_fd(int *files_fd, int *pipe_fd);
 

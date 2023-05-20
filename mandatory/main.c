@@ -6,29 +6,20 @@
 /*   By: cmenke <cmenke@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/09 20:08:33 by cmenke            #+#    #+#             */
-/*   Updated: 2023/05/17 17:19:42 by cmenke           ###   ########.fr       */
+/*   Updated: 2023/05/19 16:32:49 by cmenke           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
 
-void	ft_print_double_pointer(char **str)
-{
-	int	i;
+// void	ft_print_double_pointer(char **str)
+// {
+// 	int	i;
 
-	i = 0;
-	while (str && str[i])
-		ft_printf("%s\n", str[i++]);
-}
-
-void	ft_error_free_exit(char *error_text, char **envp_cmd_paths,
-								int pipe_fds[2], int files_fd[2])
-{
-	perror(error_text);
-	envp_cmd_paths = ft_free_double_pointer(envp_cmd_paths);
-	ft_close_fd(files_fd, pipe_fds);
-	exit(1);
-}
+// 	i = 0;
+// 	while (str && str[i])
+// 		ft_printf("%s\n", str[i++]);
+// }
 
 //mode sets the permissions of the file created if non existent.
 //Permissions can be found in man 2 chmod.
@@ -41,10 +32,10 @@ void	ft_open_file_fds(char **argv, int files_fd[2])
 	mode = S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH;
 	files_fd[0] = open(argv[1], O_RDONLY);
 	if (files_fd[0] == -1)
-		perror("input - open error");
+		perror("input");
 	files_fd[1] = open(argv[4], O_WRONLY | O_TRUNC | O_CREAT, mode);
 	if (files_fd[1] == -1)
-		perror("output - open error");
+		perror("output");
 }
 
 char	*ft_prepare_command(char *cmd_line, char ***splitted_cmd,
@@ -79,18 +70,18 @@ int	ft_call_childs(char **envp_paths, t_vars *vars, char **envp, char **argv)
 	pid_t	pid_child_2;
 
 	if (pipe(vars->pipe_fds) == -1)
-		ft_error_free_exit("pipe - error", envp_paths,
-			vars->pipe_fds, vars->files_fd);
+		ft_free_close_err_exit(vars->files_fd, vars->pipe_fds,
+			envp_paths, "pipe - error");
 	pid_child_1 = fork();
 	if (pid_child_1 == -1)
-		ft_error_free_exit("fork eror", envp_paths,
-			vars->pipe_fds, vars->files_fd);
+		ft_free_close_err_exit(vars->files_fd, vars->pipe_fds,
+			envp_paths, "fork eror");
 	if (pid_child_1 == 0)
 		ft_first_child(argv, envp_paths, vars, envp);
 	pid_child_2 = fork();
 	if (pid_child_2 == -1)
-		ft_error_free_exit("fork eror", envp_paths,
-			vars->pipe_fds, vars->files_fd);
+		ft_free_close_err_exit(vars->files_fd, vars->pipe_fds,
+			envp_paths, "fork eror");
 	if (pid_child_2 == 0)
 		ft_last_child(argv, envp_paths, vars, envp);
 	ft_close_fd(vars->files_fd, vars->pipe_fds);
