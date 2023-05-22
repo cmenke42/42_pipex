@@ -6,7 +6,7 @@
 /*   By: cmenke <cmenke@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/09 00:52:02 by user              #+#    #+#             */
-/*   Updated: 2023/05/19 16:23:12 by cmenke           ###   ########.fr       */
+/*   Updated: 2023/05/20 15:04:15 by cmenke           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ void	ft_last_child(char **argv, char **envp_paths,
 	cmd_path = ft_prepare_command(argv[3], &splitted_cmd, envp_paths);
 	if (!cmd_path)
 	{
-		ft_putendl_fd("command not found-------", 2);
+		ft_putendl_fd("command not found", 2);
 		exit_code = 127;
 	}
 	if (exit_code == 0 && vars->files_fd[1] == -1)

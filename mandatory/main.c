@@ -6,7 +6,7 @@
 /*   By: cmenke <cmenke@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/09 20:08:33 by cmenke            #+#    #+#             */
-/*   Updated: 2023/05/19 16:32:49 by cmenke           ###   ########.fr       */
+/*   Updated: 2023/05/22 18:23:19 by cmenke           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,7 @@ int	ft_child_exit_code(pid_t pid_child_1, pid_t pid_child_2)
 
 int	ft_call_childs(char **envp_paths, t_vars *vars, char **envp, char **argv)
 {
-	pid_t	pid_child_1;	
+	pid_t	pid_child_1;
 	pid_t	pid_child_2;
 
 	if (pipe(vars->pipe_fds) == -1)

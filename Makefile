@@ -6,7 +6,7 @@
 #    By: cmenke <cmenke@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/05/09 20:08:43 by cmenke            #+#    #+#              #
-#    Updated: 2023/05/16 14:21:36 by cmenke           ###   ########.fr        #
+#    Updated: 2023/05/22 19:17:54 by cmenke           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -36,8 +36,7 @@ LIBFT := libft.a
 
 INCLUDE := ${LIBFTDIR}/${LIBFT}
 
-CFLAGS := -Wall -Wextra -g
-# CFLAGS := -Wall -Werror -Wextra -g
+CFLAGS := -Wall -Werror -Wextra
 
 CC := cc
 
@@ -50,7 +49,6 @@ library:
 
 ${NAME}: ${OBJS} ${LIBFTDIR}/${LIBFT}
 	${CC} ${CFLAGS} ${OBJS} ${INCLUDE} -o ${NAME}
-
 
 ${OBJS}: ${HEADER}
 
