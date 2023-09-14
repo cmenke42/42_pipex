@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   envp_paths.c                                       :+:      :+:    :+:   */
+/*   envp_and_cmd_paths.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: cmenke <cmenke@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/10 18:14:18 by cmenke            #+#    #+#             */
-/*   Updated: 2023/05/19 16:20:45 by cmenke           ###   ########.fr       */
+/*   Updated: 2023/05/24 17:48:25 by cmenke           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,8 +30,8 @@ static char	**ft_add_slash_to_envp_paths(char **envp_paths)
 		if (!result[i])
 		{
 			perror("Malloc error join slash");
-			ft_free_double_pointer(result);
-			return (NULL);
+			result = ft_free_double_pointer(result);
+			break ;
 		}
 		i++;
 	}
@@ -66,7 +66,8 @@ char	**ft_get_envp_paths(char **envp)
 	return (envp_paths);
 }
 
-char	*ft_get_cmd_path(char **envp_paths, char *cmd)
+//checks if the cmd is to be found in one of the paths specified by envp
+static char	*ft_get_cmd_path(char **envp_paths, char *cmd)
 {
 	int		i;
 	char	*cmd_path;
@@ -88,4 +89,16 @@ char	*ft_get_cmd_path(char **envp_paths, char *cmd)
 		i++;
 	}
 	return (NULL);
+}
+
+char	*ft_prepare_command(char *cmd_line, char ***splitted_cmd,
+								char **envp_paths)
+{
+	char	*cmd_path;
+
+	cmd_path = NULL;
+	*splitted_cmd = ft_get_cmd_line_elements(cmd_line);
+	if (*splitted_cmd)
+		cmd_path = ft_get_cmd_path(envp_paths, splitted_cmd[0][0]);
+	return (cmd_path);
 }

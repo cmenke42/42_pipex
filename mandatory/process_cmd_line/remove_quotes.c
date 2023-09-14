@@ -6,7 +6,7 @@
 /*   By: cmenke <cmenke@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/12 14:38:02 by cmenke            #+#    #+#             */
-/*   Updated: 2023/05/12 14:38:06 by cmenke           ###   ########.fr       */
+/*   Updated: 2023/05/24 02:06:37 by cmenke           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ static int	ft_strlen_without_quotes(char *cmd_line)
 	return (count);
 }
 
-static char	*ft_copy_element_without_quotes(char *cmd_line, char *new_line)
+static void	ft_copy_element_without_quotes(char *cmd_line, char *new_line)
 {
 	char	quote;
 	int		i;
@@ -65,7 +65,6 @@ static char	*ft_copy_element_without_quotes(char *cmd_line, char *new_line)
 			new_line[j++] = cmd_line[i++];
 	}
 	new_line[j] = '\0';
-	return (new_line);
 }
 
 char	**ft_remove_quotes_from_elements(char **splitted_cmd_line)

@@ -6,12 +6,15 @@
 /*   By: cmenke <cmenke@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/12 14:37:12 by cmenke            #+#    #+#             */
-/*   Updated: 2023/05/16 19:22:14 by cmenke           ###   ########.fr       */
+/*   Updated: 2023/05/24 01:25:05 by cmenke           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../pipex.h"
 
+//If there is a quote it searches for the next quote of the same type.
+//If there is not a second quote of the same type this means the ammount of 
+//quotes is not equal.
 bool	ft_check_equal_quote_amt(char *s)
 {
 	int		i;
@@ -39,6 +42,10 @@ bool	ft_check_equal_quote_amt(char *s)
 	return (true);
 }
 
+//skips a block of chars which is inbetween two quotes of the same type.
+//only counts up if the quote block is not empty.
+//it only counts up once because the block is treated as one argument 
+//if there is no space outside of quotes to split it up.
 int	ft_skip_quote_block(char *cmd_line, int *i, bool *split)
 {
 	char	quote;
@@ -65,6 +72,8 @@ int	ft_skip_quote_block(char *cmd_line, int *i, bool *split)
 	return (count);
 }
 
+//searches for the next delimiter
+//and stops if it finds quotes or the end of the string.
 int	ft_skip_to_next_delimiter(char *cmd_line, int *i, bool *split, char c)
 {
 	int	count;
@@ -72,7 +81,9 @@ int	ft_skip_to_next_delimiter(char *cmd_line, int *i, bool *split, char c)
 	count = 0;
 	while (cmd_line[*i] && cmd_line[*i] != c
 		&& cmd_line[*i] != '\'' && cmd_line[*i] != '\"')
+	{
 		*i += 1;
+	}
 	if (*split == true)
 	{
 		*split = false;
@@ -81,6 +92,8 @@ int	ft_skip_to_next_delimiter(char *cmd_line, int *i, bool *split, char c)
 	return (count);
 }
 
+//bool split is an indicator whether the string should get splitted at the
+//next delimiter ' ' after a valid character or not.
 int	ft_count_cmd_line_elements(char *cmd_line, char c)
 {
 	int		i;

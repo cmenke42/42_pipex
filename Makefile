@@ -6,7 +6,7 @@
 #    By: cmenke <cmenke@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/05/09 20:08:43 by cmenke            #+#    #+#              #
-#    Updated: 2023/05/22 19:17:54 by cmenke           ###   ########.fr        #
+#    Updated: 2023/05/22 20:34:56 by cmenke           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -23,7 +23,7 @@ PROCESS_CMD_LINE := $(addprefix process_cmd_line/, count_elements.c \
 SRCS := $(addprefix ${SRCDIR}/,main.c \
 								error_and_free.c \
 								childs.c \
-								envp_paths.c \
+								envp_and_cmd_paths.c\
 								${PROCESS_CMD_LINE})
 
 OBJS := ${SRCS:.c=.o}

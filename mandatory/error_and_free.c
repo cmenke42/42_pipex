@@ -6,7 +6,7 @@
 /*   By: cmenke <cmenke@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/09 20:08:33 by cmenke            #+#    #+#             */
-/*   Updated: 2023/05/19 16:30:06 by cmenke           ###   ########.fr       */
+/*   Updated: 2023/05/24 18:19:48 by cmenke           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,15 +56,18 @@ void	ft_free_close_err_exit(int *files_fd, int *pipe_fd, char **envp_paths,
 	}
 }
 
-int	ft_error_ret_1(char *error_text)
+int	ft_error_ret_exit_code(char *error_text, int exit_code)
 {
-	perror(error_text);
-	return (1);
+	if (exit_code == 127)
+		ft_putendl_fd(error_text, 2);
+	else
+		perror(error_text);
+	return (exit_code);
 }
 
-void	ft_close_standard_fd(int fd_0, int fd_1, int fd_2)
+void	ft_close_standard_fd(void)
 {
-	close(fd_0);
-	close(fd_1);
-	close(fd_2);
+	close(STDIN_FILENO);
+	close(STDOUT_FILENO);
+	close(STDERR_FILENO);
 }

@@ -6,12 +6,13 @@
 /*   By: cmenke <cmenke@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/12 14:37:42 by cmenke            #+#    #+#             */
-/*   Updated: 2023/05/16 19:22:31 by cmenke           ###   ########.fr       */
+/*   Updated: 2023/05/24 01:46:48 by cmenke           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../pipex.h"
 
+//creates the sub arguments out of the cmd_line
 static char	**ft_get_cmd_line_sub(char *cmd_line, int *i_j, bool *split,
 								char **splitted_cmd_line)
 {
